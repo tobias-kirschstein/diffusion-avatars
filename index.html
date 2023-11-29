@@ -37,32 +37,32 @@
 
 <!-- Title, Authors & Link Capsules -->
 <section class="hero section-title">
-    <div class="hero-body">
-        <div class="container is-max-desktop">
-            <div class="columns is-centered">
-                <div class="column has-text-centered">
-                    <h1 class="title is-1 publication-title"><span class="ours-title"><span
-                            class="logo">Diffusion</span>Avatars</span> <br/>Deferred Diffusion for High-fidelity 3D&nbsp;Head&nbsp;Avatars
-                    </h1>
-                    <div class="is-size-5 publication-authors">
+    <!--    <div class="hero-body">-->
+    <div class="container is-max-desktop">
+        <div class="columns is-centered">
+            <div class="column has-text-centered">
+                <h1 class="title is-1 publication-title"><span class="ours-title"><span
+                        class="logo">Diffusion</span>Avatars</span> <br/>Deferred Diffusion for High-fidelity 3D&nbsp;Head&nbsp;Avatars
+                </h1>
+                <div class="is-size-5 publication-authors">
                         <span class="author-block">
                           <a href="https://tobias-kirschstein.github.io/">Tobias Kirschstein</a><sup>1</sup>,</span>
-                        <span class="author-block">
+                    <span class="author-block">
                           <a href="https://simongiebenhain.github.io/">Simon Giebenhain</a><sup>1</sup>,
                         </span>
-                        <span class="author-block">
+                    <span class="author-block">
                           <a href="https://niessnerlab.org/">Matthias Nie&szlig;ner</a><sup>1</sup>
                         </span>
-                    </div>
+                </div>
 
-                    <div class="is-size-5 publication-authors">
-                        <span class="author-block"><sup>1</sup>Technical University of Munich</span>
-                    </div>
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block"><sup>1</sup>Technical University of Munich</span>
+                </div>
 
-                    <div class="column has-text-centered">
-                        <div class="publication-links">
-                            <!-- PDF Link. -->
-                            <span class="link-block">
+                <div class="column has-text-centered">
+                    <div class="publication-links">
+                        <!-- PDF Link. -->
+                        <span class="link-block">
                                 <a href=""
                                    class="external-link button is-normal is-rounded is-dark">
                                   <span class="icon">
@@ -72,7 +72,7 @@
                                 </a>
                             </span>
 
-                            <span class="link-block">
+                        <span class="link-block">
                                 <a href=""
                                    class="external-link button is-normal is-rounded is-dark">
                                   <span class="icon">
@@ -82,8 +82,8 @@
                                 </a>
                             </span>
 
-                            <!-- Video Link. -->
-                            <span class="link-block">
+                        <!-- Video Link. -->
+                        <span class="link-block">
                                 <a href="https://youtu.be/nSjDiiTnp2E" target="_blank"
                                    class="external-link button is-normal is-rounded is-dark">
                                   <span class="icon">
@@ -94,8 +94,8 @@
                                 </a>
                             </span>
 
-                            <!-- Code Link. -->
-                            <span class="link-block">
+                        <!-- Code Link. -->
+                        <span class="link-block">
                                 <a href=""
                                    class="external-link button is-normal is-rounded is-dark">
                                   <span class="icon">
@@ -104,12 +104,12 @@
                                   <span>Code (coming soon)</span>
                                   </a>
                             </span>
-                        </div>
-
                     </div>
+
                 </div>
             </div>
         </div>
+        <!--        </div>-->
     </div>
 </section>
 
@@ -164,7 +164,9 @@
                     </video>
                 </div>
             </div>
-            <center>Animated <strong><span class="logo-text">Diffusion</span>Avatars</strong></center>
+            <p align="center" style="margin-top:10px">
+                Animated <strong><span class="logo-text">Diffusion</span>Avatars</strong>
+            </p>
         </div>
     </div>
 </section>
@@ -227,11 +229,12 @@
             <h2 class="title is-4">Avatar Animation via Expression Transfer</h2>
 
             <p>
-                A <strong><span class="logo-text">Diffusion</span>Avatar</strong> can be animated by expression transfer.
+                A <strong><span class="logo-text">Diffusion</span>Avatar</strong> can be animated by expression
+                transfer.
                 We obtain the expression code z<sub>exp</sub> by fitting NPHM to a video sequence of a different person.
                 Our diffusion-based neural renderer then transfers the expression to the avatar.
             </p>
-            <br />
+            <br/>
             <div id="reenactments-container" class="container">
                 <div id="reenactments-carousel" class="carousel reenactments-carousel">
                     <div class="item-38-to-18">
@@ -270,7 +273,8 @@
                 <tr>
                     <td align="center" width="40%">Source sequence</td>
                     <td width="15%"></td>
-                    <td align="center" width="45%">Animated <strong><span class="logo-text">Diffusion</span>Avatar</strong></td>
+                    <td align="center" width="45%">Animated <strong><span
+                            class="logo-text">Diffusion</span>Avatar</strong></td>
                 </tr>
             </table>
         </div>
@@ -278,69 +282,75 @@
 </section>
 
 <section class="hero is-small">
-<div class="hero-body">
-    <div class="container is-max-desktop">
-        <h2 class="title is-4">Avatar Animation via NPHM</h2>
+    <div class="hero-body">
+        <div class="container is-max-desktop">
+            <h2 class="title is-4">Avatar Animation via NPHM</h2>
 
-        <p>
-            A <strong><span class="logo-text">Diffusion</span>Avatar</strong> can also be controlled via the underlying NPHM.
-            We obtain expression codes z<sub>exp</sub> by interpolating between several target expressions.
-            Using rasterization and our diffusion-based neural renderer, the expression codes are translated into a realistic avatar with viewpoint control.
-        </p>
-        <br />
-        <div id="nphm-animation-squad-container" class="container">
-            <video poster="" id="nphm-animation-squad" autoplay controls muted loop playsinline height="100%">
-                <source src="./static/videos/NPHM_animation/NPHM_animation_squad_compressed.mp4"
-                        type="video/mp4">
-        </div>
-    </div>
-</div>
-
-<!-- Method -->
-<section class="section">
-    <div class="container is-max-desktop">
-        <div class="columns is-centered">
-            <div class="column is-full-width">
-                <h2 class="title is-4">Method Overview</h2>
-                <img src="static/images/method_overview.jpg" width="100%"/>
-                <div class="content has-text">
-                    <p>
-                        <strong><span class="logo-text">Diffusion</span>Avatars</strong> decodes an NPHM expression code
-                        z<sub>exp</sub> in two ways to obtain a realistic image:
-                    </p>
-                    <ol id="method-overview-list">
-                        <li>We first extract an NPHM mesh and rasterize it from the desired viewpoint, giving us
-                            canonical coordinates, depths, and normal renderings for the head mesh.
-                        </li>
-                        <li>The canonical coordinates x<sub>can</sub> are used to look up spatial features in a
-                            TriPlanes structure, rigging the features onto the mesh surface. Together with the
-                            rasterizer output, these mapped features form the input for the ControlNet part of
-                            <strong><span class="logo-text">Diffusion</span>Avatars</strong>.
-                        </li>
-                        <li>The second route for the expression code goes through a linear layer. It yields expression
-                            tokens that are subsequently used in a newly added cross-attention layer inside the
-                            pre-trained latent diffusion model. Intuitively, the rasterized inputs should encode pose,
-                            shape and rough expression while the direct expression conditioning hints at more detailed
-                            facial expressions.
-                        </li>
-                        <li>The final image is synthesized by iteratively denoising Gaussian noise.</li>
-                    </ol>
-                </div>
+            <p>
+                A <strong><span class="logo-text">Diffusion</span>Avatar</strong> can also be controlled via the
+                underlying NPHM.
+                We obtain expression codes z<sub>exp</sub> by interpolating between several target expressions.
+                Using rasterization and our diffusion-based neural renderer, the expression codes are translated into a
+                realistic avatar with viewpoint control.
+            </p>
+            <br/>
+            <div id="nphm-animation-squad-container" class="container">
+                <video poster="" id="nphm-animation-squad" autoplay controls muted loop playsinline height="100%">
+                    <source src="./static/videos/NPHM_animation/NPHM_animation_squad_compressed.mp4"
+                            type="video/mp4">
             </div>
         </div>
     </div>
-</section>
 
-<section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-        <h2 class="title" style="text-align: center">BibTeX</h2>
-        <pre><code>coming soon</code></pre>
-    </div>
-</section>
+    <!-- Method -->
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered">
+                <div class="column is-full-width">
+                    <h2 class="title is-4">Method Overview</h2>
+                    <img src="static/images/method_overview.jpg" width="100%"/>
+                    <div class="content has-text">
+                        <p>
+                            <strong><span class="logo-text">Diffusion</span>Avatars</strong> decodes an NPHM expression
+                            code
+                            z<sub>exp</sub> in two ways to obtain a realistic image:
+                        </p>
+                        <ol id="method-overview-list">
+                            <li>We first extract an NPHM mesh and rasterize it from the desired viewpoint, giving us
+                                canonical coordinates, depths, and normal renderings for the head mesh.
+                            </li>
+                            <li>The canonical coordinates x<sub>can</sub> are used to look up spatial features in a
+                                TriPlanes structure, rigging the features onto the mesh surface. Together with the
+                                rasterizer output, these mapped features form the input for the ControlNet part of
+                                <strong><span class="logo-text">Diffusion</span>Avatars</strong>.
+                            </li>
+                            <li>The second route for the expression code goes through a linear layer. It yields
+                                expression
+                                tokens that are subsequently used in a newly added cross-attention layer inside the
+                                pre-trained latent diffusion model. Intuitively, the rasterized inputs should encode
+                                pose,
+                                shape and rough expression while the direct expression conditioning hints at more
+                                detailed
+                                facial expressions.
+                            </li>
+                            <li>The final image is synthesized by iteratively denoising Gaussian noise.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- TODO: Dataset Overview -->
-<!-- TODO: Zoom-ins slow-motion? -->
-<!-- TODO: BibTex -->
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title" style="text-align: center">BibTeX</h2>
+            <pre><code>coming soon</code></pre>
+        </div>
+    </section>
+
+    <!-- TODO: Dataset Overview -->
+    <!-- TODO: Zoom-ins slow-motion? -->
+    <!-- TODO: BibTex -->
 
 </body>
 

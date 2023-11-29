@@ -2,10 +2,12 @@
 
 .section-title {
     background-color: #f5f5f5;
+    padding: 1.5rem;
+
 }
 
 .publication-title {
-    /*text-shadow: 2px 2px 2px #000;*/
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2)
 }
 
 span.ours-title {
@@ -14,7 +16,7 @@ span.ours-title {
 }
 
 span.logo {
-    background: url("static/images/logo_noise.png");
+    background: url("../../static/images/logo_noise.png");
     background-size: 20% 70%;
     background-clip: text;
     -webkit-background-clip: text;
@@ -22,7 +24,7 @@ span.logo {
 }
 
 span.logo-text {
-    background: url("static/images/logo_noise.png");
+    background: url("../../static/images/logo_noise.png");
     background-size: 80% 280%;
     background-clip: text;
     -webkit-background-clip: text;
@@ -37,7 +39,7 @@ span.logo-text {
 }
 
 #results-container {
-    max-width: 512px;
+    max-width: 450px;
 }
 
 #reenactments-container {
