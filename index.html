@@ -1,1 +1,367 @@
-test
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description"
+          content="DiffusionAvatars: Deferred Diffusion for High-fidelity 3D Head Avatars">
+    <meta name="keywords"
+          content="DiffusionAvatars, Diffusion, Avatars, Stable Diffusion, Expression, Viewpoint, Pose, Head, 3D">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DiffusionAvatars: Deferred Diffusion for High-fidelity 3D Head Avatars</title>
+
+    <!-- STYLESHEETS -->
+    <!--link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+          rel="stylesheet"-->
+
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+            src="https://code.jquery.com/color/jquery.color-2.2.0.min.js"
+            integrity="sha256-aSe2ZC5QeunlL/w/7PsVKmV+fa0eDbmybn/ptsKHR6I="
+            crossorigin="anonymous"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+<!-- Title, Authors & Link Capsules -->
+<section class="hero section-title">
+    <div class="hero-body">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <h1 class="title is-1 publication-title"><span class="ours-title"><span
+                            class="logo">Diffusion</span>Avatars</span> <br/>Deferred Diffusion for High-fidelity 3D&nbsp;Head&nbsp;Avatars
+                    </h1>
+                    <div class="is-size-5 publication-authors">
+                        <span class="author-block">
+                          <a href="https://tobias-kirschstein.github.io/">Tobias Kirschstein</a><sup>1</sup>,</span>
+                        <span class="author-block">
+                          <a href="https://simongiebenhain.github.io/">Simon Giebenhain</a><sup>1</sup>,
+                        </span>
+                        <span class="author-block">
+                          <a href="https://niessnerlab.org/">Matthias Nie&szlig;ner</a><sup>1</sup>
+                        </span>
+                    </div>
+
+                    <div class="is-size-5 publication-authors">
+                        <span class="author-block"><sup>1</sup>Technical University of Munich</span>
+                    </div>
+
+                    <div class="column has-text-centered">
+                        <div class="publication-links">
+                            <!-- PDF Link. -->
+                            <span class="link-block">
+                                <a href=""
+                                   class="external-link button is-normal is-rounded is-dark">
+                                  <span class="icon">
+                                      <i class="fas fa-file-pdf"></i>
+                                  </span>
+                                  <span>Paper</span>
+                                </a>
+                            </span>
+
+                            <span class="link-block">
+                                <a href=""
+                                   class="external-link button is-normal is-rounded is-dark">
+                                  <span class="icon">
+                                      <i class="ai ai-arxiv"></i>
+                                  </span>
+                                  <span>arXiv</span>
+                                </a>
+                            </span>
+
+                            <!-- Video Link. -->
+                            <span class="link-block">
+                                <a href="https://youtu.be/nSjDiiTnp2E" target="_blank"
+                                   class="external-link button is-normal is-rounded is-dark">
+                                  <span class="icon">
+                                      <!-- "fas" means fa-brand -->
+                                      <i class="fab fa-youtube"></i>
+                                  </span>
+                                  <span>Video</span>
+                                </a>
+                            </span>
+
+                            <!-- Code Link. -->
+                            <span class="link-block">
+                                <a href=""
+                                   class="external-link button is-normal is-rounded is-dark">
+                                  <span class="icon">
+                                      <i class="fab fa-github"></i>
+                                  </span>
+                                  <span>Code (coming soon)</span>
+                                  </a>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Task video -->
+<!--<section class="hero teaser">-->
+<!--    <div class="container is-max-desktop">-->
+<!--        <div class="hero-body">-->
+<!--            <video id="teaser" autoplay muted loop playsinline height="100%">-->
+<!--                <source src="./static/videos/task_compressed_2x.mp4"-->
+<!--                        type="video/mp4">-->
+<!--            </video>-->
+<!--            <h2 class="subtitle has-text-centered">-->
+<!--                <samp>NeRSemble</samp> takes multi-view video recordings of a person and allows rendering from arbitrary viewpoints.-->
+<!--            </h2>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!-- Avatar result videos-->
+<section class="hero is-small">
+    <div class="hero-body">
+        <div id="results-container" class="container">
+            <div id="results-carousel" class="carousel results-carousel">
+                <div class="item-37">
+                    <video poster="" id="37" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/Avatars/avatar_37.mp4"
+                                type="video/mp4">
+                    </video>
+                </div>
+                <div class="item item-18">
+                    <video poster="" id="18" controls muted loop playsinline height="100%">
+                        <source src="./static/videos/Avatars/avatar_18.mp4"
+                                type="video/mp4">
+                    </video>
+                </div>
+                <div class="item item-124">
+                    <video poster="" id="124" controls muted loop playsinline height="100%">
+                        <source src="./static/videos/Avatars/avatar_124.mp4"
+                                type="video/mp4">
+                    </video>
+                </div>
+                <div class="item item-264">
+                    <video poster="" id="264" controls muted loop playsinline height="100%">
+                        <source src="./static/videos/Avatars/avatar_264.mp4"
+                                type="video/mp4">
+                    </video>
+                </div>
+                <div class="item item-251">
+                    <video poster="" id="251" controls muted loop playsinline height="100%">
+                        <source src="./static/videos/Avatars/avatar_251.mp4"
+                                type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <center>Animated <strong><span class="logo-text">Diffusion</span>Avatars</strong></center>
+        </div>
+    </div>
+</section>
+
+<!-- Abstract -->
+<section class="section">
+    <div class="container is-max-desktop">
+        <!-- Abstract. -->
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+                <h2 class="title is-3">Abstract</h2>
+                <div class="content has-text-justified">
+                    <p>
+                        <strong><span class="logo-text">Diffusion</span>Avatars</strong> synthesizes a high-fidelity 3D
+                        head avatar of a person, offering intuitive control over both pose and expression.
+                    </p>
+                    <p>
+                        We propose a diffusion-based neural renderer that leverages generic 2D priors to produce
+                        compelling images of faces.
+                        For coarse guidance of the expression and head pose, we render a neural parametric head model
+                        (NPHM) from the target viewpoint, which acts as a proxy geometry of the person.
+                        Additionally, to enhance the modeling of intricate facial expressions, we condition
+                        <strong><span class="logo-text">Diffusion</span>Avatars</strong> directly on the expression
+                        codes obtained from NPHM via cross-attention.
+                        Finally, to synthesize consistent surface details across different viewpoints and expressions,
+                        we rig learnable spatial features to the head’s surface via TriPlane lookup in NPHM’s canonical
+                        space.
+                    </p>
+                    <p>
+                        We train <strong><span class="logo-text">Diffusion</span>Avatars</strong> on RGB videos and
+                        corresponding tracked NPHM meshes of a person and test the obtained avatars in both
+                        self-reenactment and animation scenarios.
+                        Our experiments demonstrate that <strong><span
+                            class="logo-text">Diffusion</span>Avatars</strong> generates temporally consistent and
+                        visually appealing videos for novel poses and expressions of a person, outperforming existing
+                        approaches.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--/ Abstract. -->
+
+        <!-- Paper video. -->
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+                <h2 class="title is-3">Video</h2>
+                <div class="publication-video">
+                    <iframe src="https://www.youtube.com/embed/nSjDiiTnp2E" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reenactment result videos-->
+<section class="hero is-small">
+    <div class="hero-body">
+        <div class="container is-max-desktop">
+            <h2 class="title is-4">Avatar Animation via Expression Transfer</h2>
+
+            <p>
+                A <strong><span class="logo-text">Diffusion</span>Avatar</strong> can be animated by expression transfer.
+                We obtain the expression code z<sub>exp</sub> by fitting NPHM to a video sequence of a different person.
+                Our diffusion-based neural renderer then transfers the expression to the avatar.
+            </p>
+            <br />
+            <div id="reenactments-container" class="container">
+                <div id="reenactments-carousel" class="carousel reenactments-carousel">
+                    <div class="item-38-to-18">
+                        <video poster="" id="38_to_18" autoplay controls muted loop playsinline height="100%">
+                            <source src="./static/videos/reenactments/38_to_18_compressed.mp4"
+                                    type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="item-31-to-264">
+                        <video poster="" id="31_to_264" autoplay controls muted loop playsinline height="100%">
+                            <source src="./static/videos/reenactments/31_to_264_compressed.mp4"
+                                    type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="item-38-to-37">
+                        <video poster="" id="38_to_37" autoplay controls muted loop playsinline height="100%">
+                            <source src="./static/videos/reenactments/38_to_37_compressed.mp4"
+                                    type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="item-55-to-18">
+                        <video poster="" id="55_to_18" autoplay controls muted loop playsinline height="100%">
+                            <source src="./static/videos/reenactments/55_to_18_compressed.mp4"
+                                    type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="item-104-to-251">
+                        <video poster="" id="104_to_251" autoplay controls muted loop playsinline height="100%">
+                            <source src="./static/videos/reenactments/104_to_251_compressed.mp4"
+                                    type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <table width="100%">
+                <tr>
+                    <td align="center" width="40%">Source sequence</td>
+                    <td width="15%"></td>
+                    <td align="center" width="45%">Animated <strong><span class="logo-text">Diffusion</span>Avatar</strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section class="hero is-small">
+<div class="hero-body">
+    <div class="container is-max-desktop">
+        <h2 class="title is-4">Avatar Animation via NPHM</h2>
+
+        <p>
+            A <strong><span class="logo-text">Diffusion</span>Avatar</strong> can also be controlled via the underlying NPHM.
+            We obtain expression codes z<sub>exp</sub> by interpolating between several target expressions.
+            Using rasterization and our diffusion-based neural renderer, the expression codes are translated into a realistic avatar with viewpoint control.
+        </p>
+        <br />
+        <div id="nphm-animation-squad-container" class="container">
+            <video poster="" id="nphm-animation-squad" autoplay controls muted loop playsinline height="100%">
+                <source src="./static/videos/NPHM_animation/NPHM_animation_squad_compressed.mp4"
+                        type="video/mp4">
+        </div>
+    </div>
+</div>
+
+<!-- Method -->
+<section class="section">
+    <div class="container is-max-desktop">
+        <div class="columns is-centered">
+            <div class="column is-full-width">
+                <h2 class="title is-4">Method Overview</h2>
+                <img src="static/images/method_overview.jpg" width="100%"/>
+                <div class="content has-text">
+                    <p>
+                        <strong><span class="logo-text">Diffusion</span>Avatars</strong> decodes an NPHM expression code
+                        z<sub>exp</sub> in two ways to obtain a realistic image:
+                    </p>
+                    <ol id="method-overview-list">
+                        <li>We first extract an NPHM mesh and rasterize it from the desired viewpoint, giving us
+                            canonical coordinates, depths, and normal renderings for the head mesh.
+                        </li>
+                        <li>The canonical coordinates x<sub>can</sub> are used to look up spatial features in a
+                            TriPlanes structure, rigging the features onto the mesh surface. Together with the
+                            rasterizer output, these mapped features form the input for the ControlNet part of
+                            <strong><span class="logo-text">Diffusion</span>Avatars</strong>.
+                        </li>
+                        <li>The second route for the expression code goes through a linear layer. It yields expression
+                            tokens that are subsequently used in a newly added cross-attention layer inside the
+                            pre-trained latent diffusion model. Intuitively, the rasterized inputs should encode pose,
+                            shape and rough expression while the direct expression conditioning hints at more detailed
+                            facial expressions.
+                        </li>
+                        <li>The final image is synthesized by iteratively denoising Gaussian noise.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+        <h2 class="title" style="text-align: center">BibTeX</h2>
+        <pre><code>coming soon</code></pre>
+    </div>
+</section>
+
+<!-- TODO: Dataset Overview -->
+<!-- TODO: Zoom-ins slow-motion? -->
+<!-- TODO: BibTex -->
+
+</body>
+
+<footer class="footer">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-full-width">
+                <div class="content has-text-centered">
+                    <p>
+                        Website inspired by <a href="https://keunhong.com/">Keunhong Park</a>'s <a
+                            href="https://nerfies.github.io/">Nerfies website</a>.
+                    </p>
+                    <p>
+                        Please contact <a href="https://niessnerlab.org/members/tobias_kirschstein/profile.html">Tobias
+                        Kirschstein</a> for feedback and questions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</footer>
+
+</html>
