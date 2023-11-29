@@ -14,7 +14,7 @@ span.ours-title {
 }
 
 span.logo {
-    background: url("/static/images/logo_noise.png");
+    background: url("static/images/logo_noise.png");
     background-size: 20% 70%;
     background-clip: text;
     -webkit-background-clip: text;
@@ -22,7 +22,7 @@ span.logo {
 }
 
 span.logo-text {
-    background: url("/static/images/logo_noise.png");
+    background: url("static/images/logo_noise.png");
     background-size: 80% 280%;
     background-clip: text;
     -webkit-background-clip: text;
