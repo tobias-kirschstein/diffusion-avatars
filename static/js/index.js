@@ -1,5 +1,37 @@
-
 EXPRESSION_ANIMATION = "37_from_76"
+
+var interp_images = [];
+
+function preloadInterpolationImages() {
+    for (var step_1 = 0; step_1 < 20; step_1 ++) {
+        if (step_1 % 2 == 0) {
+            step_1 = ("0000" + step_1).slice(-5);
+            interp_images[step_1] = []
+            for (var step_2 = 0; step_2 < 20; step_2 ++) {
+                if (step_2 % 2 == 0) {
+                    step_2 = ("0000" + step_2).slice(-5);
+                    var path = "./static/images/matrix_animation/" + EXPRESSION_ANIMATION + "/frame_" + step_1 + "_" + step_2 + ".jpg"
+                    interp_images[step_1][step_2] = new Image();
+                    interp_images[step_1][step_2].src = path;
+
+                    // console.log(path)
+                }
+            }
+        }
+    }
+}
+
+function setInterpolationImage(step_1, step_2) {
+    var image = interp_images[step_1][step_2];
+    image.ondragstart = function () {
+        return false;
+    };
+    image.oncontextmenu = function () {
+        return false;
+    };
+    // $('#interpolation-image-wrapper').empty().append(image);
+    $('.animation-matrix-rgb').empty().append(image);
+}
 
 function updateAnimationMatrix(point) {
     const skip = 2;
@@ -9,15 +41,16 @@ function updateAnimationMatrix(point) {
     let left = Math.round((n / skip) * point.x.clamp(0, 1)) * skip;
     top = ("0000" + top).slice(-5);
     left = ("0000" + left).slice(-5);
-    console.log(left, top);
+    // console.log(left, top);
     // $('.animation-matrix-rgb > img').css('left', -left + '%');
     // $('.animation-matrix-rgb > img').css('top', -top + '%');
-    $('.animation-matrix-rgb > img').attr("src", "./static/images/matrix_animation/" + EXPRESSION_ANIMATION + "/frame_" + left + "_" + top + ".jpg");
-    console.log($('.animation-matrix-rgb > img').attr("src"));
+    // $('.animation-matrix-rgb > img').attr("src", "./static/images/matrix_animation/" + EXPRESSION_ANIMATION + "/frame_" + left + "_" + top + ".jpg");
+    // console.log($('.animation-matrix-rgb > img').attr("src"));
+    setInterpolationImage(left, top);
 }
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     var carousels = bulmaCarousel.attach('#results-carousel', {
         slidesToScroll: 1,
@@ -29,7 +62,7 @@ $(document).ready(function() {
     });
 
     // Start playing next video in carousel and pause previous video to limit load on browser
-    for(var i = 0; i < carousels.length; i++) {
+    for (var i = 0; i < carousels.length; i++) {
         // Add listener to  event
         carousels[i].on('before:show', state => {
             var nextId = (state.next + state.length) % state.length;  // state.next can be -1 or larger than the number of videos
@@ -53,7 +86,7 @@ $(document).ready(function() {
     });
 
     // Start playing next video in carousel and pause previous video to limit load on browser
-    for(var i = 0; i < reenactmentsCarousels.length; i++) {
+    for (var i = 0; i < reenactmentsCarousels.length; i++) {
         // Add listener to  event
         reenactmentsCarousels[i].on('before:show', state => {
             var nextId = (state.next + state.length) % state.length;  // state.next can be -1 or larger than the number of videos
@@ -67,20 +100,20 @@ $(document).ready(function() {
         });
     }
 
-    const position = { x: 0, y: 0 }
+    const position = {x: 0, y: 0}
     const box = $('.animation-matrix');
 
-    Number.prototype.clamp = function(min, max) {
+    Number.prototype.clamp = function (min, max) {
         return Math.min(Math.max(this, min), max);
     };
 
     const cursor = $('.animation-matrix-cursor');
     interact('.animation-matrix-cursor').draggable({
         listeners: {
-            start (event) {
+            start(event) {
                 console.log(event.type, event.target)
             },
-            move (event) {
+            move(event) {
                 position.x += event.dx
                 position.y += event.dy
 
@@ -107,5 +140,7 @@ $(document).ready(function() {
             })
         ]
     });
+
+    preloadInterpolationImages();
 
 })
