@@ -30,6 +30,8 @@
     <script defer src="./static/js/fontawesome.all.min.js"></script>
     <script src="./static/js/bulma-carousel.js"></script>
     <script src="./static/js/bulma-slider.min.js"></script>
+<!--    <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>-->
+    <script src="./static/js/interact.min.js"></script>
     <script src="./static/js/index.js"></script>
 </head>
 
@@ -342,6 +344,53 @@
             </div>
         </div>
     </section>
+
+    <!-- Animation Matrix -->
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="content has-text-justified">
+                <h2 class="title is-4">Animate a <strong><span class="logo-text">Diffusion</span>Avatar</strong> yourself</h2>
+                <p>
+                    Here is an interactive viewer allowing for interpolations between four different expressions. Drag the
+                    <span style="color: #29e">blue cursor</span> around to change z<sub>exp</sub>, which animates the avatar on the right.
+                </p>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column is-half has-text-centered">
+                    <div class="animation-matrix-wrapper has-text-centered">
+                        <div class="animation-matrix-axis">
+                            <div class="animation-matrix-outer">
+                                <div class="animation-matrix">
+                                    <div class="animation-matrix-cursor"></div>
+                                </div>
+                            </div>
+                            <div class="img-matrix-animation-corner-wrapper noselect">
+                                <img id="img-matrix-animation-top-left" class="img-matrix-animation-corner" src="static/images/matrix_animation/37_from_76/frame_00000_00000.jpg" />
+                                <img id="img-matrix-animation-top-right" class="img-matrix-animation-corner" src="static/images/matrix_animation/37_from_76/frame_00018_00000.jpg" />
+                                <img id="img-matrix-animation-bottom-left" class="img-matrix-animation-corner" src="static/images/matrix_animation/37_from_76/frame_00000_00018.jpg" />
+                                <img id="img-matrix-animation-bottom-right" class="img-matrix-animation-corner" src="static/images/matrix_animation/37_from_76/frame_00018_00018.jpg" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="noselect">
+                        Latent Expression Coordinates
+                        <br/>
+                        <small>(Quadrilateral linear interpolation between 4 cornering expressions.)</small>
+                    </div>
+                </div>
+                <div class="column is-half has-text-centered noselect">
+                    <div class="animation-matrix-wrapper">
+                        <div class="animation-matrix-rgb">
+                            <img src="static/images/matrix_animation/37_from_76/frame_00000_00000.jpg"/>
+                        </div>
+                    </div>
+                    Animated <strong><span class="logo-text">Diffusion</span>Avatar</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <section class="section" id="BibTeX">
         <div class="container is-max-desktop content">
