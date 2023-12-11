@@ -1,13 +1,13 @@
-EXPRESSION_ANIMATION = "37_from_76"
+EXPRESSION_ANIMATION = "37_from_249"
 
 var interp_images = [];
 
 function preloadInterpolationImages() {
-    for (var step_1 = 0; step_1 < 20; step_1 ++) {
+    for (var step_1 = 0; step_1 < 20; step_1++) {
         if (step_1 % 2 == 0) {
             step_1 = ("0000" + step_1).slice(-5);
             interp_images[step_1] = []
-            for (var step_2 = 0; step_2 < 20; step_2 ++) {
+            for (var step_2 = 0; step_2 < 20; step_2++) {
                 if (step_2 % 2 == 0) {
                     step_2 = ("0000" + step_2).slice(-5);
                     var path = "./static/images/matrix_animation/" + EXPRESSION_ANIMATION + "/frame_" + step_1 + "_" + step_2 + ".jpg"
@@ -37,16 +37,20 @@ function updateAnimationMatrix(point) {
     const skip = 2;
     const n = 20 - skip;
 
-    let top = Math.round((n / skip) * point.y.clamp(0, 1)) * skip;
-    let left = Math.round((n / skip) * point.x.clamp(0, 1)) * skip;
-    top = ("0000" + top).slice(-5);
-    left = ("0000" + left).slice(-5);
+    let top = Math.round((n / skip) * point.y.clamp(0, 1));
+    let left = Math.round((n / skip) * point.x.clamp(0, 1));
+    // top = ("0000" + top).slice(-5);
+    // left = ("0000" + left).slice(-5);
+
+    $('.animation-matrix-rgb').css('background-position-x', left * 100/9 + '%');
+    $('.animation-matrix-rgb').css('background-position-y', top * 100/9 + '%');
+
     // console.log(left, top);
     // $('.animation-matrix-rgb > img').css('left', -left + '%');
     // $('.animation-matrix-rgb > img').css('top', -top + '%');
     // $('.animation-matrix-rgb > img').attr("src", "./static/images/matrix_animation/" + EXPRESSION_ANIMATION + "/frame_" + left + "_" + top + ".jpg");
     // console.log($('.animation-matrix-rgb > img').attr("src"));
-    setInterpolationImage(left, top);
+    // setInterpolationImage(left, top);
 }
 
 

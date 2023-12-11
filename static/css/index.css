@@ -328,13 +328,17 @@ a:hover {
 
 .animation-matrix-wrapper{
     width: 95%;
-    padding-bottom: 95%;
-    height: 0;
     overflow: hidden;
     /*border-radius: 50%;*/
     border: 2px solid #29e;
     position: relative;
     /*-webkit-mask-image: -webkit-radial-gradient(white, black);*/
+}
+
+.animation-matrix-wrapper:before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
 }
 
 
@@ -346,6 +350,8 @@ a:hover {
     overflow: hidden;
 
     position: absolute;
+
+    background-size: 1000%;  /* animation matrix contains 10 images per row/column -> 10x zoom */
 }
 
 .animation-matrix-rgb img {
