@@ -1,0 +1,68 @@
+# Note: conda dependencies have only 1 "="
+#       pip dependencies have 2 "=="
+# Fuse pip dependencies together under one " - pip" item
+#       Otherwise, only some of the are installed, because conda creates a temporary requirements.txt file
+#       only the last -pip section
+
+name: diffusion-avatars
+
+channels:
+  - nvidia/label/cuda-11.7.1
+  - pytorch
+  - conda-forge
+
+dependencies:
+  - python=3.8
+  - pip
+  - jupyter
+  - jupyterlab
+
+  # CUDA
+  - cudatoolkit
+  - cuda-nvcc
+  - cuda-libraries-dev  # For cuda_runtime.h
+  - ninja
+
+  # Additional PyTorch
+  - functorch
+  - torchinfo
+
+  - pip:
+      # Torch
+      - --extra-index-url https://download.pytorch.org/whl/cu117
+      - torch==2.0.1+cu117
+      - torchvision==0.15.2+cu117
+      - einops
+      - lightning
+
+      # nvdiffrast & Meshes
+      - git+ssh://git@github.com/NVlabs/nvdiffrast.git
+      - pyopengl
+      - glfw
+      - trimesh
+      - python-openctm
+      - smplx
+
+      # Logging
+      - wandb
+      - mediapy
+      - environs
+      - tyro
+
+      # Custom packages for facilitating ML research
+      - dreifus==0.1.7
+      - elias==0.2.11
+
+      # Diffusion
+      - accelerate
+      - diffusers==0.21.2
+      - transformers==4.31.0
+      - xformers==0.0.21  # 0.0.20
+      - bitsandbytes
+
+      # Evaluation
+      - pyfvvdp
+      - visage@git+https://github.com/tobias-kirschstein/face-parser.git
+      - insightface
+      - onnxruntime-gpu
+      - torchmetrics
