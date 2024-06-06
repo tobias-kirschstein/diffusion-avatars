@@ -2,9 +2,8 @@ from dataclasses import dataclass
 from typing import Dict, Optional
 
 from elias.config import Config
-from elias.evaluator.paired_video_evaluator import PairedVideoMetric
-
-from diffusion_avatars.evaluation.paired_image_evaluator import PairedImageMetrics
+from visage.evaluator.paired_image_evaluator import PairedImageMetrics
+from visage.evaluator.paired_video_evaluator import PairedVideoMetric
 
 
 @dataclass

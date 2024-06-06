@@ -15,21 +15,10 @@ class RenderingDataConfig(Config):
     downscale_factor: int
     sequences: List[Tuple[int, str]]  # [(17, "EXP-1-head"), (30, "EXP-2-eyes"), ... ]
     n_timesteps: int = -1
-    use_nvdiffrast: bool = False
     use_mipmapping: bool = False
     use_antialiasing: bool = False
     use_ambient_dimensions: bool = False
-    # use_flame2023: bool = False
     use_nphm: bool = False
-    # use_uv_faces: bool = False
-    # close_mouth: bool = False
-    # temporal_smoothing_config: TemporalSmoothingConfig = TemporalSmoothingConfig()
-
-    precompute_latent_images: bool = False
-    precompute_use_color_correction: bool = True
-    precompute_use_robust_matting_mask: bool = True
-    precompute_diffusion_model_name: str = "stabilityai/stable-diffusion-2-1"
-    precompute_use_vae_mean: bool = False
 
     mesh_provider_config: MeshProviderConfig = MeshProviderConfig()
 

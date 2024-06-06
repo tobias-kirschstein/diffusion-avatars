@@ -7,12 +7,12 @@ from typing import List, Optional, Dict, Tuple
 import mediapy
 import numpy as np
 from elias.config import Config
-from elias.evaluator.paired_video_evaluator import PairedVideoEvaluator
 from elias.util import save_img, save_json, load_json, load_img, ensure_directory_exists
+from visage.evaluator.paired_face_image_evaluator import PairedFaceImageEvaluator
+from visage.evaluator.paired_video_evaluator import PairedVideoEvaluator
 
 from diffusion_avatars.dataset.rendering_dataset import DatasetSplit, SampleMetadata, Crop
 from diffusion_avatars.evaluation.evaluation_result import DiffusionAvatarsEvaluationResult, PerSequenceMetric
-from diffusion_avatars.evaluation.paired_image_evaluator import PairedImageEvaluator
 from diffusion_avatars.model.inference_output import DiffusionAvatarsInferenceOutput, SchedulerType
 from diffusion_avatars.model_manager.finder import find_model_folder
 from diffusion_avatars.util.types import default_dict_to_dict
@@ -167,7 +167,7 @@ class EvaluationManager:
     def _evaluate_inference_outputs(self, all_inference_outputs: Dict[int, Dict[str, Dict[str, Dict[int, Tuple[DiffusionAvatarsInferenceOutput, np.ndarray]]]]],
                                     apply_mask: bool = False):
         fps = 24
-        paired_image_evaluator = PairedImageEvaluator()
+        paired_image_evaluator = PairedFaceImageEvaluator()
         paired_video_evaluator = PairedVideoEvaluator(fps=fps)
 
         per_sequence_metrics = defaultdict(lambda: defaultdict(dict))

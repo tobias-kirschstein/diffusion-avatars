@@ -186,7 +186,6 @@ class RenderingDatasetConfig(Config):
         data_config = self.get_data_config()
         for rendering_name in self.rendering_names:
             n_channels = rendering_name.get_n_channels(
-                nvdiffrast=data_config.use_nvdiffrast,
                 use_canonical_coordinates=self.use_canonical_coordinates)
 
             # Apply frequency encodings
@@ -1117,7 +1116,6 @@ class RenderingDataset(Dataset):
         n_channels = 0
         for rendering_name in self._config.rendering_names:
             n_channels += rendering_name.get_n_channels(
-                nvdiffrast=self._data_config.use_nvdiffrast,
                 use_canonical_coordinates=self._config.use_canonical_coordinates)
 
         if self._config.use_neural_textures:
@@ -1136,12 +1134,10 @@ class RenderingDataset(Dataset):
 
         if self._config.use_freq_encoding_uv:
             n_channels += 2 * self._config.n_frequencies_uv * RenderingName.UV.get_n_channels(
-                self._data_config.use_nvdiffrast,
                 use_canonical_coordinates=self._config.use_canonical_coordinates)
 
         if self._config.use_freq_encoding_depth:
             n_channels += 2 * self._config.n_frequencies_depth * RenderingName.DEPTHS.get_n_channels(
-                self._data_config.use_nvdiffrast,
                 use_canonical_coordinates=self._config.use_canonical_coordinates)
 
         return n_channels

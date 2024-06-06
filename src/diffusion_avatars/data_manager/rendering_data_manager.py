@@ -41,7 +41,7 @@ class RenderingName(StringEnum):
     BACKWARD_FLOW_7 = "backward_flow_7"
 
     def get_n_channels(self,
-                       nvdiffrast: bool = False,
+                       nvdiffrast: bool = True,
                        use_canonical_coordinates: bool = False):
         if self == self.UV:
             if nvdiffrast and not use_canonical_coordinates:
@@ -119,7 +119,7 @@ class RenderingDataManager(BaseDataManager[None, RenderingDataConfig, RenderingD
 
     @property
     def _use_nvdiffrast(self) -> bool:
-        return self._config.use_nvdiffrast
+        return True
 
     @property
     def _config(self):

@@ -17,11 +17,17 @@
     ```
     which creates a new conda environment `diffusion-avatars` (Installation may take a while).
 
- 3. Install the `diffusion_avatars` package itself by running 
+ 2. Install the `diffusion_avatars` package itself by running 
     ```shell
     pip install -e .
     ```
     inside the cloned repository folder.
+
+ 3. *[Optional Linux]* Update `LD_LIBRARY_PATH` for nvidffrast
+    ```shell
+    ln -s "$CONDA_PREFIX/lib" "$CONDA_PREFIX/lib64"
+    ```
+    Solves the issue `/usr/bin/ld: cannot find -lcudart`
     
 ### 1.2. Environment Paths
 

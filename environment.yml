@@ -52,6 +52,7 @@ dependencies:
       # Custom packages for facilitating ML research
       - dreifus==0.1.7
       - elias==0.2.11
+      - visage==0.2.5
 
       # Diffusion
       - accelerate
