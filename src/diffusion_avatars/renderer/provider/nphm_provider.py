@@ -1,20 +1,18 @@
 from pathlib import Path
-from typing import Tuple, Optional
+from typing import Tuple
 
 import numpy as np
-import openctm
 import trimesh
 from dreifus.matrix import Pose, Intrinsics
 from dreifus.render import project
-
-from diffusion_avatars.data_manager.nersemble_data_manager import NeRSembleSequenceDataManager
-from diffusion_avatars.util.quantization import CanonicalCoordinatesQuantizer, to_spherical
 from scipy.spatial import KDTree
 from trimesh import Trimesh
 
+from diffusion_avatars.data_manager.nersemble_data_manager import NeRSembleSequenceDataManager
 # from diffusion_avatars.renderer.provider.expression_animation_provider import ExpressionAnimationManager
 from diffusion_avatars.renderer.provider.mesh_provider import MeshProvider, MeshProviderConfig
 from diffusion_avatars.util.mesh import subdivide
+from diffusion_avatars.util.quantization import CanonicalCoordinatesQuantizer, to_spherical
 
 
 class NPHMProvider(MeshProvider):
@@ -22,11 +20,7 @@ class NPHMProvider(MeshProvider):
     def __init__(self,
                  participant_id: int,
                  sequence: str,
-                 mesh_provider_config: MeshProviderConfig = MeshProviderConfig(),
-                 target_actor: Optional[int] = None,
-                 source_animation: Optional[str] = None,
-                 # use_flame_2023: bool = False,
-                 # use_subdivision: bool = False
+                 mesh_provider_config: MeshProviderConfig = MeshProviderConfig()
                  ):
         self._data_manager = NeRSembleSequenceDataManager(participant_id, sequence)
         self._use_subdivision = mesh_provider_config.use_subdivision
@@ -35,62 +29,23 @@ class NPHMProvider(MeshProvider):
         self._cut_throat = mesh_provider_config.cut_throat
         self._cut_throat_margin = mesh_provider_config.cut_throat_margin
         if mesh_provider_config.cut_throat:
-            # TODO: These are hard-coded paths!
-            cluster_folder = self._data_manager._location[:self._data_manager._location.index('/doriath')]
-            self._nphm_flame_reference_mesh = trimesh.load_mesh(
-                f"{cluster_folder}/doriath/sgiebenhain/nphm_dataset2/{participant_id if target_actor is None else target_actor:03d}/000/flame.ply")
+            self._nphm_flame_reference_mesh = self._data_manager.load_NPHM_FLAME_reference_mesh()
 
         tracker_name = mesh_provider_config.flame_tracking.get_version()
         flame_params = self._data_manager.load_3DMM_tracking(tracker_name)
 
-        corrective_name = f'{tracker_name}_2_NPHM_corrective'
-        # nphm_corrective_transform = self._data_manager.load_corrective_transform(corrective_name)
-        if source_animation is None:
-            tracker_name = mesh_provider_config.flame_tracking.get_version()
-            flame_params = self._data_manager.load_3DMM_tracking(tracker_name)
+        # We need the rigid transformation from the FLAME fitting, because NPHM is fitted in FLAME space
+        self._timestep_mapping = {timestep: i for i, timestep in enumerate(self._data_manager.get_timesteps())}
+        self._flame_rotation = flame_params['rotation']  # [T, 3]
+        self._flame_translation = flame_params['translation']  # [T, 3]
+        self._flame_scale = flame_params['scale']  # [1, 3]
 
-            corrective_name = f'{tracker_name}_2_NPHM_corrective'
-            # nphm_corrective_transform = self._data_manager.load_corrective_transform(corrective_name)
+        T = len(self._flame_rotation)
+        self._nphm_corrective_rotation = np.stack([np.eye(3) for _ in range(T)])
+        self._nphm_corrective_translation = np.stack([np.array([0, 0, 0]) for _ in range(T)])
+        self._nphm_corrective_scale = np.ones(T)
 
-            # We need the rigid transformation from the FLAME fitting, because NPHM is fitted in FLAME space
-            self._timestep_mapping = {timestep: i for i, timestep in enumerate(self._data_manager.get_timesteps())}
-            self._flame_rotation = flame_params['rotation']  # [T, 3]
-            self._flame_translation = flame_params['translation']  # [T, 3]
-            self._flame_scale = flame_params['scale']  # [1, 3]
-
-            # self._nphm_corrective_rotation = nphm_corrective_transform['rotation']  # [T, 3, 3]
-            # self._nphm_corrective_translation = nphm_corrective_transform['translation']  # [T, 3, 3]
-            # self._nphm_corrective_scale = nphm_corrective_transform['scale']  # [T, ]
-
-            T = len(self._flame_rotation)
-            self._nphm_corrective_rotation = np.stack([np.eye(3) for _ in range(T)])
-            self._nphm_corrective_translation = np.stack([np.array([0, 0, 0]) for _ in range(T)])
-            self._nphm_corrective_scale = np.ones(T)
-
-            self._expression_animation_manager = None
-        else:
-            self._expression_animation_manager = ExpressionAnimationManager(source_animation, skip=2)
-            self._timestep_mapping = {timestep: i for i, timestep in enumerate(self._expression_animation_manager.get_timesteps())}
-            T = len(self._expression_animation_manager.get_timesteps())
-
-            idx = [0 for _ in range(T)]
-            self._flame_rotation = flame_params['rotation'][idx]  # [T, 3]
-            self._flame_translation = flame_params['translation'][idx]  # [T, 3]
-            self._flame_scale = flame_params['scale']  # [1, 3]
-
-            self._nphm_corrective_rotation = nphm_corrective_transform['rotation'][idx]  # [T, 3, 3]
-            self._nphm_corrective_translation = nphm_corrective_transform['translation'][idx]  # [T, 3, 3]
-            self._nphm_corrective_scale = nphm_corrective_transform['scale'][idx]  # [T, ]
-
-            # self._flame_rotation = np.zeros((T, 3))  # [T, 3]
-            # self._flame_translation = np.zeros((T, 3))  # [T, 3]
-            # self._flame_scale = np.ones((1, 3))  # [1, 3]
-            #
-            # self._nphm_corrective_rotation = [np.eye(3)]  # [T, 3, 3]
-            # self._nphm_corrective_translation = np.zeros((1, 3))  # [T, 3, 3]
-            # self._nphm_corrective_scale = np.ones((1,))  # [T, ]
-
-        self._target_actor = target_actor
+        self._expression_animation_manager = None
 
     def get_n_timesteps(self) -> int:
         return len(self._timestep_mapping)
@@ -224,43 +179,9 @@ class NPHMProvider(MeshProvider):
 
     def _load_mesh(self, timestep: int) -> trimesh.Trimesh:
         if timestep not in self._mesh_cache:
-            if self._target_actor is not None:
-                # TODO: these are hard-coded paths
-                cluster_folder = self._data_manager._location[:self._data_manager._location.index('/doriath')]
-                source_actor = self._data_manager.get_participant_id()
-                source_sequence = self._data_manager.get_sequence_name()
-                cross_reenactment_folder = f"{cluster_folder}/doriath/sgiebenhain/expression_transfers/{self._target_actor:03d}/from_{source_actor :03d}_{source_sequence}"
-                if not Path(cross_reenactment_folder).exists():
-                    print(f"{cross_reenactment_folder} does not exists, trying sanity_noLMs ...")
-                    cross_reenactment_folder = f"{cluster_folder}/doriath/sgiebenhain/expression_transfers/{self._target_actor:03d}/from_{source_actor :03d}_{source_sequence}_sanity_noLMs"
-
-                mesh_path = f"{cross_reenactment_folder}/{timestep:05d}_local_new.CTM"
-                mesh = openctm.import_mesh(mesh_path)
-
-                canonical_coordinates_path = f"{cross_reenactment_folder}/{timestep:05d}_canonical_vertices_uint16.npz"
-                canonical_coordinates = np.load(canonical_coordinates_path)['arr_0']
-                canonical_coordinates_quantizer = CanonicalCoordinatesQuantizer()
-                canonical_coordinates = canonical_coordinates_quantizer.decode(canonical_coordinates)
-                mesh = trimesh.Trimesh(mesh.vertices,
-                                       mesh.faces,
-                                       vertex_attributes={"canonical_coordinates": canonical_coordinates},
-                                       process=False)
-            elif self._expression_animation_manager is not None:
-                mesh_path = self._expression_animation_manager.get_mesh_path(timestep)
-                mesh = openctm.import_mesh(mesh_path)
-
-                canonical_coordinates_path = self._expression_animation_manager.get_canonical_vertices_path(timestep)
-                canonical_coordinates = np.load(canonical_coordinates_path)['arr_0']
-                canonical_coordinates_quantizer = CanonicalCoordinatesQuantizer()
-                canonical_coordinates = canonical_coordinates_quantizer.decode(canonical_coordinates)
-                mesh = trimesh.Trimesh(mesh.vertices,
-                                       mesh.faces,
-                                       vertex_attributes={"canonical_coordinates": canonical_coordinates},
-                                       process=False)
-            else:
-                mesh = self._data_manager.load_NPHM_mesh(timestep,
-                                                         include_canonical_coordinates=True,
-                                                         mm_name=self._nphm_tracking_version.get_version())
+            mesh = self._data_manager.load_NPHM_mesh(timestep,
+                                                     include_canonical_coordinates=True,
+                                                     mm_name=self._nphm_tracking_version.get_version())
 
             if self._cut_throat:
                 self.cut_throat_and_move_vertices(mesh, margin=self._cut_throat_margin)

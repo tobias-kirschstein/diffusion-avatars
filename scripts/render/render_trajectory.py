@@ -175,7 +175,6 @@ def main(run_name: str,
             intrinsics.cx = resolution / 2
             intrinsics.cy = resolution / 2
 
-            data_config.mesh_provider_config.cut_throat = False  # TODO: remove
             nphm_provider = NPHMProvider(p_id, sequence, mesh_provider_config=data_config.mesh_provider_config)
             world_2_nphm = nphm_provider.get_world_2_nphm_pose(0)
 
@@ -214,7 +213,6 @@ def main(run_name: str,
         # Nvdiffrast rendering
         render_size = Dimensions(resolution, resolution)
         if data_config.use_nphm:
-            data_config.mesh_provider_config.cut_throat = False  # TODO: remove
             mesh_provider = NPHMProvider(p_id, sequence, mesh_provider_config=data_config.mesh_provider_config)
             renderer = NvDiffrastRenderer(mesh_provider, render_size)
         else:

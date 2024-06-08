@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Tuple, List, Dict
+from typing import Tuple, List, Dict, Optional
 
 from elias.config import Config
 
@@ -10,7 +10,7 @@ from dataclasses import field
 
 @dataclass
 class RenderingDataConfig(Config):
-    name: str
+    name: Optional[str]
 
     downscale_factor: int
     sequences: List[Tuple[int, str]]  # [(17, "EXP-1-head"), (30, "EXP-2-eyes"), ... ]

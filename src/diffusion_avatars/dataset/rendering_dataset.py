@@ -475,8 +475,6 @@ class RenderingDatasetConfig(Config):
 
                     remove_ids = [3]  # torso
                     if segmentation_mask.max() > 14:
-                        # TODO: Simon is currently re-running the segmentation. Once it is done, this needs to be adapted
-                        #   There will be a proper class ID for out-of-bounding-box (instead of just the max)
                         remove_ids.append(segmentation_mask.max())  # out-of-bounding-box
                     is_facer_mask = True
 

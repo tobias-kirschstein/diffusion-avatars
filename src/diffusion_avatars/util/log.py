@@ -5,7 +5,7 @@ from typing import List, Dict
 import cv2
 import numpy as np
 import wandb
-from elias.evaluator.paired_image_evaluator import PairedImageEvaluator
+from visage.evaluator.paired_image_evaluator import PairedImageEvaluator
 
 from diffusion_avatars.dataset.rendering_dataset import RenderingDatasetConfig
 from diffusion_avatars.model.inference_output import DiffusionAvatarsInferenceOutput

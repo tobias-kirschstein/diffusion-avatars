@@ -389,6 +389,9 @@ class NeRSembleSequenceDataManager:
         expression_code = np.load(expression_code_path)['arr_0']
         return expression_code
 
+    def load_NPHM_FLAME_reference_mesh(self) -> trimesh.Trimesh:
+        return trimesh.load_mesh(f"{self._location}/flame.ply", process=False)
+
     # ==========================================================
     # Paths
     # ==========================================================
